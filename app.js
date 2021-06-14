@@ -12,10 +12,16 @@ app.post('/insert',(req,res)=>{
     var priceInput = req.body.txtPrice;
     if(nameInput.length <6){
         res.render('new',{nameError:'Ten k nho hon 5 ky tu!'})
-    }else{
-        res.render('saveDone',{name:nameInput,price:priceInput})
+    }else if(priceInput.trim().length ==0 || (isNaN(priceInput)==true || priceInput <=10)){
+        res.render('new',{priceError: 'Price k phai la so hoac lon hon 10'})
+    }else if(nameInput.indexOf("@") == -1 || nameInput.indexOf("Pro") !=0){
+        res.render('new',{error:'khong co ky tu @ hoac cho Pro o dau'})
     }
-    
+    else{
+        let name = nameInput.substring(3)
+        res.render('saveDone',{name:nameInput,price:priceInput,nameCut:name})
+    }
+      
 })
 
 app.get('/new',(req,res)=>{
